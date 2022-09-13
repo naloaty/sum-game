@@ -1,7 +1,8 @@
-package me.naloaty.sumgame
+package me.naloaty.sumgame.presentation
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import me.naloaty.sumgame.R
 
 class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
