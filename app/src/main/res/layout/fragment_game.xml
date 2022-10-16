@@ -102,7 +102,7 @@
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
         android:max="100"
-        android:progress="50"
+        android:progress="0"
         app:layout_constraintBottom_toTopOf="@id/options_barrier"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
