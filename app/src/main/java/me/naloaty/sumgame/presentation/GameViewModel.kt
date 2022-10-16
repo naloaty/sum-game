@@ -12,7 +12,9 @@ import me.naloaty.sumgame.domain.entity.Question
 import me.naloaty.sumgame.domain.usecases.GenerateQuestionUseCase
 import me.naloaty.sumgame.domain.usecases.GetGameSettingsUseCase
 
-class GameViewModel: ViewModel() {
+class GameViewModel(
+    private val level: Level
+): ViewModel() {
 
     private val repository = GameRepositoryImpl
 
@@ -45,13 +47,18 @@ class GameViewModel: ViewModel() {
     private var countOfRightAnswers = 0
     private var countOfQuestions = 0
 
-    fun initGame(level: Level) {
+    init {
+        initGame()
+        startGame()
+    }
+
+    private fun initGame() {
         gameSettings = getGameSettingsUseCase(level)
         countOfQuestions = 0
         countOfRightAnswers = 0
     }
 
-    fun startGame() {
+    private fun startGame() {
         startTimer()
         generateQuestion()
         updateProgressAnswers()
