@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <layout>
+    <data>
+        <variable
+            name="viewModel"
+            type="me.naloaty.sumgame.presentation.GameViewModel" />
+    </data>
+
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools"
@@ -14,10 +20,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
+            tools:text="00:00"
+            app:timeLeft="@{viewModel.gameTimer}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="00:00" />
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/tv_sum"
@@ -28,12 +35,13 @@
             android:gravity="center"
             android:textColor="@color/white"
             android:textStyle="bold"
+            tools:text="6"
+            app:intText="@{viewModel.question.sum}"
             app:layout_constraintBottom_toTopOf="@+id/mcv_visible_number"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tv_game_timer"
-            app:layout_constraintVertical_chainStyle="packed"
-            tools:text="6" />
+            app:layout_constraintVertical_chainStyle="packed" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/mcv_visible_number"
@@ -58,7 +66,8 @@
                 android:layout_height="wrap_content"
                 android:textAlignment="center"
                 android:textColor="@color/text_gray"
-                tools:text="4" />
+                tools:text="4"
+                app:intText="@{viewModel.question.visibleNumber}"/>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -91,7 +100,8 @@
             android:layout_marginStart="16dp"
             android:layout_marginEnd="16dp"
             android:layout_marginBottom="8dp"
-            android:text="@string/game_right_answers_count"
+            tools:text="@string/game_right_answers_count"
+            app:progressAnswers="@{viewModel.progressAnswers}"
             app:layout_constraintBottom_toTopOf="@+id/progress_bar"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.0"
@@ -106,7 +116,7 @@
             android:layout_marginBottom="16dp"
             app:trackCornerRadius="8dp"
             android:max="100"
-            android:progress="0"
+            android:progress="@{viewModel.percentOfRightAnswers}"
             app:layout_constraintBottom_toTopOf="@id/options_barrier"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
@@ -120,6 +130,8 @@
             android:clickable="true"
             android:focusable="true"
             app:contentPadding="12dp"
+            app:optionValue="@{viewModel.question.options.get(0)}"
+            app:onOptionClickListener="@{viewModel::registerAnswer}"
             app:layout_constraintBottom_toTopOf="@+id/mcv_option_4"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/mcv_option_2"
@@ -132,9 +144,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                tools:layout_editor_absoluteX="73dp"
-                tools:layout_editor_absoluteY="56dp"
-                tools:text="1" />
+                tools:text="1"
+                app:intText="@{viewModel.question.options.get(0)}"
+                android:onClickListener="@{() -> viewModel.registerAnswer(viewModel.question.options.get(0))}"/>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -148,6 +160,8 @@
             android:clickable="true"
             android:focusable="true"
             app:contentPadding="12dp"
+            app:optionValue="@{viewModel.question.options.get(1)}"
+            app:onOptionClickListener="@{viewModel::registerAnswer}"
             app:layout_constraintBottom_toTopOf="@+id/mcv_option_5"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/mcv_option_3"
@@ -160,9 +174,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                tools:layout_editor_absoluteX="73dp"
-                tools:layout_editor_absoluteY="56dp"
-                tools:text="2" />
+                tools:text="2"
+                app:intText="@{viewModel.question.options.get(1)}"/>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -175,6 +188,8 @@
             android:clickable="true"
             android:focusable="true"
             app:contentPadding="12dp"
+            app:optionValue="@{viewModel.question.options.get(2)}"
+            app:onOptionClickListener="@{viewModel::registerAnswer}"
             app:layout_constraintBottom_toTopOf="@+id/mcv_option_6"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -187,9 +202,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                tools:layout_editor_absoluteX="73dp"
-                tools:layout_editor_absoluteY="56dp"
-                tools:text="3" />
+                tools:text="3"
+                app:intText="@{viewModel.question.options.get(2)}"/>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -202,6 +216,8 @@
             android:clickable="true"
             android:focusable="true"
             app:contentPadding="12dp"
+            app:optionValue="@{viewModel.question.options.get(3)}"
+            app:onOptionClickListener="@{viewModel::registerAnswer}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/mcv_option_5"
@@ -214,9 +230,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                tools:layout_editor_absoluteX="73dp"
-                tools:layout_editor_absoluteY="56dp"
-                tools:text="4" />
+                tools:text="4"
+                app:intText="@{viewModel.question.options.get(3)}"/>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -229,6 +244,8 @@
             android:clickable="true"
             android:focusable="true"
             app:contentPadding="12dp"
+            app:optionValue="@{viewModel.question.options.get(4)}"
+            app:onOptionClickListener="@{viewModel::registerAnswer}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toStartOf="@+id/mcv_option_6"
@@ -241,9 +258,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                tools:layout_editor_absoluteX="73dp"
-                tools:layout_editor_absoluteY="56dp"
-                tools:text="5" />
+                tools:text="5"
+                app:intText="@{viewModel.question.options.get(4)}"/>
 
         </com.google.android.material.card.MaterialCardView>
 
@@ -256,6 +272,8 @@
             android:clickable="true"
             android:focusable="true"
             app:contentPadding="12dp"
+            app:optionValue="@{viewModel.question.options.get(5)}"
+            app:onOptionClickListener="@{viewModel::registerAnswer}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintDimensionRatio="1:1"
             app:layout_constraintEnd_toEndOf="parent"
@@ -268,9 +286,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center"
-                tools:layout_editor_absoluteX="73dp"
-                tools:layout_editor_absoluteY="56dp"
-                tools:text="6" />
+                tools:text="6"
+                app:intText="@{viewModel.question.options.get(5)}"/>
 
         </com.google.android.material.card.MaterialCardView>
 
