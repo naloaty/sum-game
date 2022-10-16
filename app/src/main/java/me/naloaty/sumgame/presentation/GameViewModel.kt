@@ -111,7 +111,7 @@ class GameViewModel: ViewModel() {
         _gameFinished.value = GameResult(
             isWinner(),
             countOfRightAnswers,
-            countOfQuestions,
+            countOfQuestions - 1,
             gameSettings
         )
     }

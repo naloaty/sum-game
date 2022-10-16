@@ -36,6 +36,11 @@ class GameFinishedFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        setupClickListeners()
+        bindViews()
+    }
+
+    private fun setupClickListeners() {
         requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
             object : OnBackPressedCallback(true) {
                 override fun handleOnBackPressed() {
@@ -44,6 +49,37 @@ class GameFinishedFragment : Fragment() {
             })
         binding.btnTryAgain.setOnClickListener {
             retryGame()
+        }
+    }
+
+    private fun bindViews() {
+        with(binding) {
+            with(gameResult) {
+                ivLogoGameResult.setImageResource(getLogoRes())
+                tvScore.text = countOfRightAnswer.toString()
+                tvPercentOfRightAnswers.text = getPercentOfRightAnswers().toString()
+            }
+            with (gameResult.gameSettings) {
+                tvRequiredRightAnswers.text = minCountOfRightAnswers.toString()
+                tvRequiredPercentOfRightAnswers.text = minPercentOfRightAnswers.toString()
+            }
+        }
+    }
+
+    private fun getLogoRes() = with(gameResult) {
+        if (winner) {
+            R.drawable.success_logo
+        } else {
+            R.drawable.failure_logo
+        }
+    }
+
+    private fun getPercentOfRightAnswers() = with(gameResult) {
+        if (countOfQuestions == 0) {
+            0
+        } else {
+            val coefficient = countOfRightAnswer.toFloat() / countOfQuestions.toFloat()
+            (coefficient * 100).toInt()
         }
     }
 
