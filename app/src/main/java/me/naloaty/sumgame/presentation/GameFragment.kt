@@ -9,6 +9,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import com.google.android.material.card.MaterialCardView
 import me.naloaty.sumgame.R
 import me.naloaty.sumgame.databinding.FragmentGameBinding
@@ -19,10 +21,10 @@ import java.lang.RuntimeException
 
 class GameFragment : Fragment() {
 
-    private lateinit var level: Level
+    private val args by navArgs<GameFragmentArgs>()
 
     private val viewModelFactory by lazy {
-        GameViewModelFactory(level)
+        GameViewModelFactory(args.level)
     }
 
     private val viewModel: GameViewModel by lazy {
@@ -35,7 +37,6 @@ class GameFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        parseArgs()
     }
 
     override fun onCreateView(
@@ -119,31 +120,8 @@ class GameFragment : Fragment() {
     }
 
     private fun launchGameFinishedFragment(gameResult: GameResult) {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container, GameFinishedFragment.newInstance(gameResult))
-            .addToBackStack(null)
-            .commit()
-    }
-
-    private fun parseArgs() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            level = requireArguments().getParcelable(ARG_LEVEL, Level::class.java)!!
-        } else {
-            level = requireArguments().getParcelable<Level>(ARG_LEVEL)!!
-        }
-    }
-
-    companion object {
-
-        const val NAME = "game_fragment"
-        private const val ARG_LEVEL = "level"
-
-        fun newInstance(level: Level): GameFragment {
-            return GameFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(ARG_LEVEL, level)
-                }
-            }
-        }
+        findNavController().navigate(
+            GameFragmentDirections.actionGameFragmentToGameFinishedFragment(gameResult)
+        )
     }
 }

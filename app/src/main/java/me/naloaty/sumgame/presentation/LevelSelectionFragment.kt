@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import me.naloaty.sumgame.R
 import me.naloaty.sumgame.databinding.FragmentLevelSelectionBinding
 import me.naloaty.sumgame.domain.entity.Level
@@ -49,18 +50,8 @@ class LevelSelectionFragment : Fragment() {
     }
 
     private fun launchGameFragment(level: Level) {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container, GameFragment.newInstance(level))
-            .addToBackStack(GameFragment.NAME)
-            .commit()
-    }
-
-    companion object {
-
-        const val NAME = "level_selection_fragment"
-
-        fun newInstance(): LevelSelectionFragment {
-            return LevelSelectionFragment()
-        }
+        findNavController().navigate(
+            LevelSelectionFragmentDirections.actionLevelSelectionFragmentToGameFragment(level)
+        )
     }
 }

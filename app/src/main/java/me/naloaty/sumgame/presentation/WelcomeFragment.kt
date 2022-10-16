@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.fragment.findNavController
 import me.naloaty.sumgame.R
 import me.naloaty.sumgame.databinding.FragmentWelcomeBinding
 import java.lang.RuntimeException
@@ -31,10 +32,7 @@ class WelcomeFragment : Fragment() {
     }
 
     private fun launchLevelSelectionFragment() {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container, LevelSelectionFragment.newInstance())
-            .addToBackStack(null)
-            .commit()
+        findNavController().navigate(R.id.action_welcomeFragment_to_levelSelectionFragment)
     }
 
     override fun onDestroyView() {
