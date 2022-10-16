@@ -10,6 +10,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import androidx.navigation.fragment.findNavController
+import androidx.navigation.fragment.navArgs
 import me.naloaty.sumgame.R
 import me.naloaty.sumgame.databinding.FragmentGameBinding
 import me.naloaty.sumgame.databinding.FragmentGameFinishedBinding
@@ -18,7 +19,8 @@ import java.lang.RuntimeException
 
 class GameFinishedFragment : Fragment() {
 
-    private lateinit var gameResult: GameResult
+    private val args by navArgs<GameFinishedFragmentArgs>()
+    private val gameResult by lazy { args.gameResult }
 
     private var _binding: FragmentGameFinishedBinding? = null
     private val binding: FragmentGameFinishedBinding
@@ -26,7 +28,6 @@ class GameFinishedFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        parseArgs()
     }
 
     override fun onCreateView(
@@ -85,27 +86,7 @@ class GameFinishedFragment : Fragment() {
         _binding = null
     }
 
-    private fun parseArgs() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            gameResult = requireArguments().getParcelable(ARG_GAME_RESULT, GameResult::class.java)!!
-        } else {
-            gameResult = requireArguments().getParcelable<GameResult>(ARG_GAME_RESULT)!!
-        }
-    }
-
     private fun retryGame() {
         findNavController().popBackStack()
-    }
-
-    companion object {
-        const val ARG_GAME_RESULT = "game_result"
-
-        fun newInstance(gameResult: GameResult): GameFinishedFragment {
-            return GameFinishedFragment().apply {
-                arguments = Bundle().apply {
-                    putParcelable(ARG_GAME_RESULT, gameResult)
-                }
-            }
-        }
     }
 }
