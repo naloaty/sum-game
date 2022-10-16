@@ -12,5 +12,6 @@
     <color name="yellow_200">#FFF59D</color>
     <color name="lilac_300">#7986CB</color>
     <color name="red_300">#E57373</color>
+    <color name="text_gray">#49454f</color>
 
 </resources>
