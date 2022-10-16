@@ -1,6 +1,7 @@
 package me.naloaty.sumgame.presentation
 
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -125,7 +126,11 @@ class GameFragment : Fragment() {
     }
 
     private fun parseArgs() {
-        level = requireArguments().getSerializable(ARG_LEVEL) as Level
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            level = requireArguments().getParcelable(ARG_LEVEL, Level::class.java)!!
+        } else {
+            level = requireArguments().getParcelable<Level>(ARG_LEVEL)!!
+        }
     }
 
     companion object {
@@ -136,7 +141,7 @@ class GameFragment : Fragment() {
         fun newInstance(level: Level): GameFragment {
             return GameFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_LEVEL, level)
+                    putParcelable(ARG_LEVEL, level)
                 }
             }
         }

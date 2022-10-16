@@ -1,11 +1,13 @@
 package me.naloaty.sumgame.presentation
 
+import android.os.Build
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
 import me.naloaty.sumgame.R
 import me.naloaty.sumgame.databinding.FragmentGameBinding
@@ -89,7 +91,11 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun parseArgs() {
-        gameResult = requireArguments().getSerializable(ARG_GAME_RESULT) as GameResult
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            gameResult = requireArguments().getParcelable(ARG_GAME_RESULT, GameResult::class.java)!!
+        } else {
+            gameResult = requireArguments().getParcelable<GameResult>(ARG_GAME_RESULT)!!
+        }
     }
 
     private fun retryGame() {
@@ -103,7 +109,7 @@ class GameFinishedFragment : Fragment() {
         fun newInstance(gameResult: GameResult): GameFinishedFragment {
             return GameFinishedFragment().apply {
                 arguments = Bundle().apply {
-                    putSerializable(ARG_GAME_RESULT, gameResult)
+                    putParcelable(ARG_GAME_RESULT, gameResult)
                 }
             }
         }
