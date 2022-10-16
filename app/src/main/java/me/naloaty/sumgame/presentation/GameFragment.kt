@@ -19,7 +19,12 @@ import java.lang.RuntimeException
 class GameFragment : Fragment() {
 
     private lateinit var level: Level
-    private lateinit var viewModel: GameViewModel
+    private val viewModel: GameViewModel by lazy {
+        ViewModelProvider(
+            this,
+            ViewModelProvider.AndroidViewModelFactory.getInstance(requireActivity().application)
+        )[GameViewModel::class.java]
+    }
 
     private var _binding: FragmentGameBinding? = null
     private val binding: FragmentGameBinding
@@ -40,7 +45,6 @@ class GameFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel = ViewModelProvider(this)[GameViewModel::class.java]
         observeViewModel()
         viewModel.initGame(level)
         viewModel.startGame()
@@ -88,7 +92,7 @@ class GameFragment : Fragment() {
 
     private fun observePercentOfRightAnswers() {
         viewModel.percentOfRightAnswers.observe(viewLifecycleOwner) {
-            binding.progressBar.progress = it
+            binding.progressBar.setProgress(it, true)
         }
     }
 
