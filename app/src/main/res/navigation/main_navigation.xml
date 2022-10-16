@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main_navigation"
+    app:startDestination="@id/welcomeFragment">
+
+    <fragment
+        android:id="@+id/welcomeFragment"
+        android:name="me.naloaty.sumgame.presentation.WelcomeFragment"
+        android:label="fragment_welcome"
+        tools:layout="@layout/fragment_welcome" >
+        <action
+            android:id="@+id/action_welcomeFragment_to_levelSelectionFragment"
+            app:destination="@id/levelSelectionFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/levelSelectionFragment"
+        android:name="me.naloaty.sumgame.presentation.LevelSelectionFragment"
+        android:label="fragment_level_selection"
+        tools:layout="@layout/fragment_level_selection" >
+        <action
+            android:id="@+id/action_levelSelectionFragment_to_gameFragment"
+            app:destination="@id/gameFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameFragment"
+        android:name="me.naloaty.sumgame.presentation.GameFragment"
+        android:label="fragment_game"
+        tools:layout="@layout/fragment_game" >
+        <action
+            android:id="@+id/action_gameFragment_to_gameFinishedFragment"
+            app:destination="@id/gameFinishedFragment"
+            app:popUpTo="@id/gameFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <fragment
+        android:id="@+id/gameFinishedFragment"
+        android:name="me.naloaty.sumgame.presentation.GameFinishedFragment"
+        android:label="fragment_game_finished"
+        tools:layout="@layout/fragment_game_finished" />
+</navigation>

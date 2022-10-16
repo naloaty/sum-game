@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.card.MaterialCardView
 import me.naloaty.sumgame.R
 import me.naloaty.sumgame.databinding.FragmentGameBinding
@@ -119,10 +120,10 @@ class GameFragment : Fragment() {
     }
 
     private fun launchGameFinishedFragment(gameResult: GameResult) {
-        requireActivity().supportFragmentManager.beginTransaction()
-            .replace(R.id.main_container, GameFinishedFragment.newInstance(gameResult))
-            .addToBackStack(null)
-            .commit()
+        val args = Bundle().apply {
+            putParcelable(GameFinishedFragment.ARG_GAME_RESULT, gameResult)
+        }
+        findNavController().navigate(R.id.action_gameFragment_to_gameFinishedFragment, args)
     }
 
     private fun parseArgs() {
@@ -136,7 +137,7 @@ class GameFragment : Fragment() {
     companion object {
 
         const val NAME = "game_fragment"
-        private const val ARG_LEVEL = "level"
+        const val ARG_LEVEL = "level"
 
         fun newInstance(level: Level): GameFragment {
             return GameFragment().apply {

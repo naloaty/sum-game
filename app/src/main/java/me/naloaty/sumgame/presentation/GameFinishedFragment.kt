@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import androidx.activity.OnBackPressedCallback
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.FragmentManager
+import androidx.navigation.fragment.findNavController
 import me.naloaty.sumgame.R
 import me.naloaty.sumgame.databinding.FragmentGameBinding
 import me.naloaty.sumgame.databinding.FragmentGameFinishedBinding
@@ -43,12 +44,6 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun setupClickListeners() {
-        requireActivity().onBackPressedDispatcher.addCallback(viewLifecycleOwner,
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    retryGame()
-                }
-            })
         binding.btnTryAgain.setOnClickListener {
             retryGame()
         }
@@ -99,12 +94,11 @@ class GameFinishedFragment : Fragment() {
     }
 
     private fun retryGame() {
-        requireActivity().supportFragmentManager
-            .popBackStack(GameFragment.NAME, FragmentManager.POP_BACK_STACK_INCLUSIVE)
+        findNavController().popBackStack()
     }
 
     companion object {
-        private const val ARG_GAME_RESULT = "game_result"
+        const val ARG_GAME_RESULT = "game_result"
 
         fun newInstance(gameResult: GameResult): GameFinishedFragment {
             return GameFinishedFragment().apply {
